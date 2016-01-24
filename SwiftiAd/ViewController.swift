@@ -7,19 +7,37 @@
 //
 
 import UIKit
+import iAd
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, ADBannerViewDelegate
+{
+  // MARK: Outlets
+  
+  @IBOutlet weak var bannerView: ADBannerView!
 
+  // MARK: View Controller's Lifecycle
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    canDisplayBannerAds = true
+    bannerView.delegate = self
+    bannerView.hidden = true
   }
 
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
+  func bannerViewDidLoadAd(banner: ADBannerView!)
+  {
+    bannerView.hidden = false
   }
-
-
+  
+  func bannerViewActionShouldBegin(banner: ADBannerView!, willLeaveApplication willLeave: Bool) -> Bool
+  {
+    return willLeave
+  }
+  
+  func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!)
+  {
+    bannerView.hidden = true
+  }
+  
 }
-
